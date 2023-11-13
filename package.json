@@ -1,0 +1,16 @@
+{
+  "name": "gallery",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "devDependencies": {
+    "turbo": "^1.10.16"
+  }
+}
