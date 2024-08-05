@@ -1,0 +1,21 @@
+{
+  "name": "gallery",
+  "version": "1.0.0",
+  "main": "index.js",
+  "packageManager": "yarn@1.22.21",
+  "author": "Eduardo Oliveira <eduardo_y05@outlook.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start:dev": "turbo start:dev"
+  },
+  "workspaces": {
+    "packages": [
+      "apps/*"
+    ]
+  },
+  "devDependencies": {
+    "turbo": "^2.0.11",
+    "typescript": "^5.1.3"
+  }
+}
