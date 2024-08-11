@@ -1,19 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Content } from '../types';
-import { CreatorAvatar } from "@/modules/creator/components/creator-avatar";
+import { CreatorLine } from "@/modules/creator/components/creator-line";
 
 export interface GalleryItemProps {
   content: Content;
 }
 
 export const GalleryItem = ({ content }: GalleryItemProps) => {
+  const { creator } = useParams();
   const mediaToken = localStorage.getItem('@GALLERY:MEDIATOKEN');
   const location = useLocation();
 
   return (
     <div className="space-y-3 ">
       <Link
-        to={`/dashboard/gallery/content/${content.id}/`}
+        to={`/dashboard/gallery/${creator ? `${creator}/` : ''}content/${content.id}/`}
         state={{
           prevLocation: location
         }}
@@ -30,14 +31,7 @@ export const GalleryItem = ({ content }: GalleryItemProps) => {
           </div>
         </span>
       </Link>
-      <div className="flex items-center gap-3">
-        <CreatorAvatar creator={content.creator} />
-        
-        <div className="flex-1 space-y-1 text-sm">
-          <h3 className="font-medium leading-none">{content.creator.name}</h3>
-          <p className="text-xs text-muted-foreground">Lena Logic</p>
-        </div>
-      </div>
+      <CreatorLine creator={content.creator} />
     </div>
   )
 }

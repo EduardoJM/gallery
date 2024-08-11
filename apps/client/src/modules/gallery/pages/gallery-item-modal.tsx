@@ -31,7 +31,7 @@ const GalleryItemModalInner = ({ id }: GalleryItemModalInnerProps) => {
   )
 }
 
-export const GalleryItemModal = () => {
+const GalleryItemModal = () => {
 
   const { id } = useParams<{ id?: string }>();
   const { state } = useLocation();
@@ -72,3 +72,5 @@ export const GalleryItemModal = () => {
     </Dialog>
   )
 }
+
+export default GalleryItemModal;

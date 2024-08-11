@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { GalleryGrid } from '@/components/ui/gallery-grid';
 import { GalleryItem } from './gallery-item';
 import { useContentsInfinite } from '../queries';
 
@@ -13,7 +14,7 @@ export const InfiniteGallery = () => {
 
   return (
     <div>
-      <div className='grid grid-cols-5 gap-4'>
+      <GalleryGrid>
         {data.pages.map((group, i) => (
           <Fragment key={i}>
             {group.results.map((content) => (
@@ -21,7 +22,7 @@ export const InfiniteGallery = () => {
             ))}
           </Fragment>
         ))}
-      </div>
+      </GalleryGrid>
       <div>
         <button
           onClick={() => fetchNextPage()}

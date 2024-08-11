@@ -1,17 +1,15 @@
-import { Routes, Route } from 'react-router-dom';
+import { Suspense } from 'react';
 import { InfiniteGallery } from '../components/infinite-gallery';
-import { GalleryItemModal } from '../components/gallery-item-modal';
+import { InfiniteGallerySuspense } from '../components/infinite-gallery-suspense';
 
 const Gallery = () => {
 
 
   return (
     <div>
-      <InfiniteGallery />
-
-      <Routes>
-        <Route path="content/:id" element={<GalleryItemModal />} />
-      </Routes>
+      <Suspense fallback={<InfiniteGallerySuspense />}>
+        <InfiniteGallery />
+      </Suspense>
     </div>
   )
 };

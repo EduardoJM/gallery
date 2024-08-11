@@ -1,8 +1,12 @@
 import api from "@/lib/axios"
 import { Content, PaginatedContents } from './types';
 
-export const getContentsPaginated = async (page: number = 1): Promise<PaginatedContents> => {
-  const { data } = await api.get<PaginatedContents>(`/contents?page=${page}`);
+export const getContentsPaginated = async (page: number = 1, creator: string | null = null): Promise<PaginatedContents> => {
+  let queries = `?page=${page}`;
+  if (creator) {
+    queries = `${queries}&creator=${creator}`;
+  }
+  const { data } = await api.get<PaginatedContents>(`/contents${queries}`);
   return data;
 }
 

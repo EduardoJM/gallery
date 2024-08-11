@@ -1,8 +1,11 @@
 import { InfiniteData, QueryKey, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import { PaginatedContents } from '../types';
 import { getContentsPaginated } from '../services';
 
 export const useContentsInfinite = () => {
+  const { creator } = useParams();
+
   return useSuspenseInfiniteQuery<
     PaginatedContents,
     unknown,
@@ -10,8 +13,8 @@ export const useContentsInfinite = () => {
     QueryKey,
     number
   >({
-    queryKey: ['contents'],
-    queryFn: async ({ pageParam }) => getContentsPaginated(pageParam),
+    queryKey: ['contents', creator || null],
+    queryFn: async ({ pageParam }) => getContentsPaginated(pageParam, creator || null),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.meta.page === lastPage.meta.pages) {
