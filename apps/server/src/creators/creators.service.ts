@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Creator, CreatorDocument } from './schemas/creator.schema';
-import { CreateCreatorDto, SetCreatorLinksDto } from './dto';
+import { ChangeCreatorDto, CreateCreatorDto, SetCreatorLinksDto } from './dto';
 import { User } from '../users/schemas/user.schema';
 
 @Injectable()
@@ -21,6 +21,18 @@ export class CreatorsService {
     const { name } = createCreatorDto;
     const savedCreator = new this.creatorModel({ name, user, cover: relativeCover, links: [] });
     return savedCreator.save();
+  }
+
+  async update(user: User, id: string, cover: string | null, changeCreatorDto: ChangeCreatorDto): Promise<CreatorDocument> {
+    const creator = await this.creatorModel.findOne({ user, _id: id }).exec();
+    if (cover) {
+      const relativeCover = path.relative(path.resolve(__dirname, '..', '..', '..', '..'), cover);
+      creator.cover = relativeCover;
+    }
+    if (changeCreatorDto.name) {
+      creator.name = changeCreatorDto.name;
+    }
+    return creator.save();
   }
 
   async list(user: User, page: number = 1) {

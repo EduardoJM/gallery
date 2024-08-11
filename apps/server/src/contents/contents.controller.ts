@@ -76,9 +76,10 @@ export class ContentsController {
   async list(
     @Request() request,
     @Query('page', new ParseIntPipe({ optional: true })) page: number,
+    @Query('creator') creatorId?: string | null,
   ) {
     const user = request.user as User;
-    return this.contentsService.list(user, null, page)
+    return this.contentsService.list(user, creatorId || null, page)
   }
 
   @Get(':id')
