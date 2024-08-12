@@ -3,6 +3,7 @@ import { ContentCreator } from '../types';
 
 export interface CreatorAvatarProps {
   creator: ContentCreator;
+  size?: string;
 }
 
 const fallbackName = (name: string) => {
@@ -21,13 +22,13 @@ const fallbackName = (name: string) => {
   return `${first[0].toUpperCase()}${last[0].toUpperCase()}`;
 }
 
-export const CreatorAvatar = ({ creator }: CreatorAvatarProps) => {
+export const CreatorAvatar = ({ creator, size }: CreatorAvatarProps) => {
   const mediaToken = localStorage.getItem('@GALLERY:MEDIATOKEN');
 
   const falback = fallbackName(creator.name);
 
   return (
-    <Avatar>
+    <Avatar className={size ? `w-[${size}] h-[${size}]` : undefined}>
       <AvatarImage
         src={`http://localhost:3000/media/creators/${creator.id}/cover/?token=${mediaToken}`}
         className="object-cover"

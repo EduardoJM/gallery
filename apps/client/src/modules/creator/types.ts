@@ -1,4 +1,8 @@
-export interface ContentCreatorLink {}
+export interface ContentCreatorLink {
+  name: string;
+  icon: string;
+  link: string;
+}
 
 export interface ContentCreator {
   name: string;
