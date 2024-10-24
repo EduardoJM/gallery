@@ -88,7 +88,21 @@ export class MediaService {
     };
   }
 
-  async getContentVideo(user: User, id: string) {
+  getStartEndHeaders(rangeHeader: string, videoSize: number, mimeType: string) {
+    const CHUNK_SIZE = 10 ** 6;
+    const start = Number(rangeHeader.replace(/\D/g, ""));
+    const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+    const contentLength = end - start + 1;
+    const headers = {
+        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": contentLength,
+        "Content-Type": mimeType,
+    };
+    return { start, end, headers };
+  }
+
+  async getContentVideo(user: User, id: string, rangeHeader: string) {
     const content = await this.contentsService.findById(user, id);
     if (!content) {
       return null;
@@ -98,13 +112,30 @@ export class MediaService {
     }
     const { file } = content;
     const mimeType = this.getMimeTypeFromVideoFile(file);
+    const bucketFile = this.getBucketFilePath(file);
+    const videoSize = fs.statSync(bucketFile).size;
+    const { start, end, headers } = this.getStartEndHeaders(rangeHeader, videoSize, mimeType);
     return {
       mimeType,
-      stream: fs.createReadStream(this.getBucketFilePath(file)),
+      stream: fs.createReadStream(bucketFile, { start, end }),
+      start,
+      end,
+      headers,
     };
   }
 
   streamToResponse(mimeType: string, stream: fs.ReadStream, response: Response) {
+    stream.on("open", function () {
+      response.set("Content-Type", mimeType);
+      stream.pipe(response);
+    });
+    stream.on("error", function () {
+      response.set("Content-Type", "text/plain");
+      response.status(404).end("Not found");
+    });
+  }
+
+  streamVideoToResponse(mimeType: string, stream: fs.ReadStream, response: Response) {
     stream.on("open", function () {
       response.set("Content-Type", mimeType);
       stream.pipe(response);

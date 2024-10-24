@@ -7,14 +7,16 @@ export interface DropZoneProps {
   maxFileSize?: number;
   onConfirm: (files: Array<File>) => void;
   currentFile?: File | string | null;
+  createThumb?: (file: File) => string;
 }
 
 export const Dropzone = ({
   multiple = false,
   validExtensions = [],
-  maxFileSize = 5 * 1024 * 1024,
+  maxFileSize,
   onConfirm,
   currentFile,
+  createThumb,
 }: DropZoneProps) => {
   const [error, setError] = useState<string | null>(null);
 
@@ -45,8 +47,11 @@ export const Dropzone = ({
     if (typeof currentFile === "string") {
       return currentFile;
     }
-    return URL.createObjectURL(currentFile);
-  }, [currentFile]);
+    if (!createThumb) {
+      return URL.createObjectURL(currentFile);
+    }
+    return createThumb(currentFile);
+  }, [currentFile, createThumb]);
 
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,

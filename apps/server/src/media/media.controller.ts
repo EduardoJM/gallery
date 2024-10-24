@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Request, Param, Response } from '@nestjs/common';
+import { StreamableFile, Controller, UseGuards, Get, Request, Param, Response } from '@nestjs/common';
 import { Response as ExpressResponse } from 'express';
 import { MediaAuthGuard } from './media-auth.guard';
 import { User } from 'src/users/schemas/user.schema';
@@ -42,16 +42,21 @@ export class MediaController {
   @Get('content/:id/video')
   async getContentVideo(
     @Request() request,
-    @Response() response: ExpressResponse,
+    @Response({ passthrough: true }) response: ExpressResponse,
     @Param('id') id: string,
   ) {
+    const range = request.headers.range;
+    if (!range) {
+      throw new Error('');
+    }
     const user = request.user as User;
-    const contentStream = await this.mediaService.getContentVideo(user, id);
+    const contentStream = await this.mediaService.getContentVideo(user, id, range);
     if (!contentStream) {
       throw new Error('');
     }
-    const { stream, mimeType } = contentStream;
-    this.mediaService.streamToResponse(mimeType, stream, response);
+    const { stream, headers } = contentStream;
+    response.writeHead(206, headers);
+    return new StreamableFile(stream)
   }
 
   @Get('content/:id/thumb')

@@ -16,7 +16,13 @@ const GalleryRoutes = () => {
             element={
               <>
                 <Gallery />
-                <Suspense fallback={<></>}>
+                <Suspense
+                  fallback={
+                    <>
+                      TODO: abrindo modal...
+                    </>
+                  }
+                >
                   <GalleryItemModal />
                 </Suspense>
               </>
@@ -30,7 +36,13 @@ const GalleryRoutes = () => {
             element={
               <>
                 <Gallery />
-                <Suspense fallback={<></>}>
+                <Suspense
+                  fallback={
+                    <>
+                      TODO: abrindo modal...
+                    </>
+                  }
+                >
                   <GalleryItemModal />
                 </Suspense>
               </>

@@ -77,9 +77,30 @@ export class ContentsController {
     @Request() request,
     @Query('page', new ParseIntPipe({ optional: true })) page: number,
     @Query('creator') creatorId?: string | null,
+    @Query('mediaType') mediaType?: string | null,
   ) {
     const user = request.user as User;
-    return this.contentsService.list(user, creatorId || null, page)
+    return this.contentsService.list(user, creatorId || null, page, mediaType)
+  }
+
+  @Get('next/:id')
+  async listFindNext(
+    @Request() request,
+    @Param('id') id: string,
+    @Query('creator') creatorId?: string | null,
+  ) {
+    const user = request.user as User;
+    return this.contentsService.getNextInList(user, id, creatorId || null)
+  }
+
+  @Get('previous/:id')
+  async listFindPrevious(
+    @Request() request,
+    @Param('id') id: string,
+    @Query('creator') creatorId?: string | null,
+  ) {
+    const user = request.user as User;
+    return this.contentsService.getPreviousInList(user, id, creatorId || null)
   }
 
   @Get(':id')

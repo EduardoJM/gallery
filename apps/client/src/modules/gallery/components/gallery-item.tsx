@@ -1,5 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
-import { Content } from '../types';
+import { Play } from 'lucide-react'
+import { Content, ContentType } from '../types';
 import { CreatorLine } from "@/modules/creator/components/creator-line";
 
 export interface GalleryItemProps {
@@ -20,7 +21,7 @@ export const GalleryItem = ({ content }: GalleryItemProps) => {
         }}
       >
         <span data-state="closed">
-          <div className="overflow-hidden rounded-md">
+          <div className="overflow-hidden relative rounded-md">
             <img
               loading="lazy"
               width="250"
@@ -28,6 +29,11 @@ export const GalleryItem = ({ content }: GalleryItemProps) => {
               className="h-auto w-auto object-cover transition-all hover:scale-105 aspect-[3/4]"
               src={`http://localhost:3000/media/content/${content.id}/thumb/?token=${mediaToken}`}
             />
+            {content.type === ContentType.Video && (
+              <div className="absolute inset-0 flex items-center justify-center text-white">
+                <Play fill="#fff" className="w-[32px] h-[32px]" />
+              </div>
+            )}
           </div>
         </span>
       </Link>

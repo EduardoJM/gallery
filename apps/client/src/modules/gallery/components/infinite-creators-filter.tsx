@@ -1,5 +1,6 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 import { Plus, MoreVertical } from 'lucide-react';
 import { useContentCreatorsInfinite } from '@/modules/creator/queries';
 import { CreatorLine } from "@/modules/creator/components/creator-line";
@@ -15,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 const InfiniteCreatorsFilterInner = () => {
+  const { ref, inView } = useInView();
   const {
     data,
     fetchNextPage,
@@ -22,6 +24,12 @@ const InfiniteCreatorsFilterInner = () => {
     isFetching,
     isFetchingNextPage,
   } = useContentCreatorsInfinite();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage()
+    }
+  }, [fetchNextPage, inView])
 
   return (
     <div>
@@ -57,6 +65,7 @@ const InfiniteCreatorsFilterInner = () => {
         <button
           onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetchingNextPage}
+          ref={ref}
         >
           {isFetchingNextPage
             ? 'Loading more...'

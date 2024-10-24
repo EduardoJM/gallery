@@ -1,5 +1,5 @@
 import api from "@/lib/axios"
-import { PaginatedContentCreators, ContentCreator } from './types';
+import { PaginatedContentCreators, ContentCreator, ContentCreatorLink } from './types';
 
 export const getContentCreatorsPaginated = async (page: number = 1): Promise<PaginatedContentCreators> => {
   const { data } = await api.get<PaginatedContentCreators>(`/creators?page=${page}`);
@@ -19,4 +19,8 @@ export const createContentCreator = async (data: unknown) => {
 export const updateContentCreator = async (id: string, data: unknown) => {
   const { data: responseData } = await api.patch<ContentCreator>(`/creators/${id}/`, data);
   return responseData;
+};
+
+export const setContentCreatorLinks = async (id: string, links: Array<ContentCreatorLink>) => {
+  await api.put(`/creators/${id}/links/`, { links });
 };

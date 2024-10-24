@@ -28,7 +28,7 @@ export const CreatorAvatar = ({ creator, size }: CreatorAvatarProps) => {
   const falback = fallbackName(creator.name);
 
   return (
-    <Avatar className={size ? `w-[${size}] h-[${size}]` : undefined}>
+    <Avatar style={size ? { width: size, height: size } : {}}>
       <AvatarImage
         src={`http://localhost:3000/media/creators/${creator.id}/cover/?token=${mediaToken}`}
         className="object-cover"
