@@ -34,7 +34,7 @@ export const DashboardLayout = () => {
 
   return (
     <div className="flex flex-col items-stretch">
-      <div className="h-[64px] bg-primary sticky top-0 z-50	flex flex-row items-center px-6">
+      <div className="h-[64px] bg-primary z-50	flex flex-row items-center px-6">
         <div className="flex-1"></div>
 
         <DropdownMenu>

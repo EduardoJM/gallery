@@ -1,13 +1,16 @@
 import { Fragment, useEffect } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Images } from 'lucide-react';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer'
 import { GalleryGrid } from '@/components/ui/gallery-grid';
 import { GalleryItem } from './gallery-item';
 import { useContentsInfinite } from '../queries';
+import { buttonVariants } from '@/components/ui/button';
 
 export const InfiniteGallery = () => {
   const { ref, inView } = useInView();
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
   const [params] = useSearchParams();
   const {
     data,
@@ -16,12 +19,15 @@ export const InfiniteGallery = () => {
     isFetching,
     isFetchingNextPage,
   } = useContentsInfinite(params.get('media') || null);
+  const { creator } = useParams();
 
   useEffect(() => {
     if (inView) {
       fetchNextPage()
     }
   }, [fetchNextPage, inView])
+
+  const isEmpty = data.pages.length === 1 && data.pages[0].meta.pages === 0;
 
   return (
     <div>
@@ -31,30 +37,57 @@ export const InfiniteGallery = () => {
         <Link to={{ pathname, search: '?media=Video' }}>Vídeos</Link>
       </div>
 
-      <GalleryGrid>
-        {data.pages.map((group, i) => (
-          <Fragment key={i}>
-            {group.results.map((content) => (
-              <GalleryItem key={content.id} content={content} />
+      {isEmpty && (
+        <div className='min-h-[300px] bg-[#ccc] rounded-lg p-5 flex flex-col items-center justify-center gap-2'>
+          <Images size={48} className='mb-6' />
+          <h3 className='text-xl uppercase font-bold'>Nenhum item!</h3>
+          {!!creator && (
+            <>
+              <p className='text-center'>
+                Nenhum item foi adicionado, ainda, a galeria desse criador.
+              </p>
+
+              <Link
+                className={buttonVariants({ variant: 'default' })}
+                to={`?dialog=upload&id=${creator}`}
+                state={{ prevLocation: location }}
+              >
+                Adicionar Novo
+              </Link>
+            </>
+          )}
+        </div>
+      )}
+      
+      {!isEmpty && (
+        <>
+          <GalleryGrid>
+            {data.pages.map((group, i) => (
+              <Fragment key={i}>
+                {group.results.map((content) => (
+                  <GalleryItem key={content.id} content={content} />
+                ))}
+              </Fragment>
             ))}
-          </Fragment>
-        ))}
-      </GalleryGrid>
-      <div>
-        <button
-          ref={ref}
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
-        >
-          {/* TODO: better fetching status? */}
-          {isFetchingNextPage
-            ? 'Loading more...'
-            : hasNextPage
-              ? 'Load More'
-              : 'Nothing more to load'}
-        </button>
-      </div>
-      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+          </GalleryGrid>
+
+          <div>
+            <button
+              ref={ref}
+              onClick={() => fetchNextPage()}
+              disabled={!hasNextPage || isFetchingNextPage}
+            >
+              {/* TODO: better fetching status? */}
+              {isFetchingNextPage
+                ? 'Loading more...'
+                : hasNextPage
+                  ? 'Load More'
+                  : 'Nothing more to load'}
+            </button>
+          </div>
+          <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+        </>
+      )}
     </div>
   );
 }

@@ -7,8 +7,8 @@ export const GalleryLayout = () => {
 
   return (
     <div className="flex flex-row gap-5">
-      <div className="w-[300px] h-screen sticky top-0 flex flex-col items-stretch">
-        <div className="pt-10">
+      <div className="w-[300px] flex flex-col items-stretch pt-10">
+        <div className="pt-[64px]">
           <Link
             to="/dashboard/gallery"
             onClick={() => window.scrollTo({ top: 0 })}

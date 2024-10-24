@@ -89,6 +89,7 @@ export const InfiniteCreatorsFilter = () => {
           <Plus />
         </Link>
       </div>
+      
       <div className='flex-1'>
         <InfiniteCreatorsFilterInner />
       </div>

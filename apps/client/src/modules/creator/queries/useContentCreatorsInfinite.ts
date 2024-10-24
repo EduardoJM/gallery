@@ -14,6 +14,9 @@ export const useContentCreatorsInfinite = () => {
     queryFn: async ({ pageParam }) => getContentCreatorsPaginated(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
+      if (!lastPage.meta.pages) {
+        return null;
+      }
       if (lastPage.meta.page === lastPage.meta.pages) {
         return null;
       }
