@@ -7,8 +7,7 @@ import {
   SetStateAction,
 } from "react";
 import { useAuthenticatedUser } from "../queries";
-
-interface User {}
+import { User } from "@/modules/users/types";
 
 export interface AuthContextData {
   isAuthenticated?: boolean;
