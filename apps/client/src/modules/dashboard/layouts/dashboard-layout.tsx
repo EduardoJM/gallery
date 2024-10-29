@@ -1,5 +1,5 @@
 import { useAuth } from "@/modules/auth/contexts";
-import { Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import { Avatar } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { AvatarFallback } from "@radix-ui/react-avatar";
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { useSignOutMutation } from '@/modules/auth/mutations';
 
 export const DashboardLayout = () => {
@@ -34,8 +34,11 @@ export const DashboardLayout = () => {
 
   return (
     <div className="flex flex-col items-stretch">
-      <div className="h-[64px] bg-primary z-50	flex flex-row items-center px-6">
-        <div className="flex-1"></div>
+      <div className="h-[64px] bg-primary z-50 sticky top-0	flex flex-row items-center px-6">
+        <div className="flex-1">
+          <Link to="/dashboard/gallery">Início</Link>
+          <Link to="/dashboard/creators">Criadores</Link>
+        </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -56,8 +59,16 @@ export const DashboardLayout = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="px-28">
-        <Outlet />
+      <div className="px-28 flex flex-col items-center">
+        <Suspense
+          fallback={
+            <>
+              TODO: carregando...
+            </>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   )

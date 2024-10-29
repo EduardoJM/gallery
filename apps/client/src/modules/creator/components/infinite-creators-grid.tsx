@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { Plus, MoreVertical } from 'lucide-react';
 import { useContentCreatorsInfinite } from '@/modules/creator/queries';
@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-const InfiniteCreatorsFilterInner = () => {
+const InfiniteCreatorsGridInner = () => {
   const { ref, inView } = useInView();
   const {
     data,
@@ -79,19 +79,24 @@ const InfiniteCreatorsFilterInner = () => {
   );
 }
 
-export const InfiniteCreatorsFilter = () => {
+export const InfiniteCreatorsGrid = () => {
+  const location = useLocation();
 
   return (
     <div className='flex-1 flex flex-col items-stretch pt-6'>
       <div className='mb-6 flex flex-row items-center'>
         <h2 className='flex-1'>Criadores de Conteúdo</h2>
-        <Link to="?dialog=creator" className={buttonVariants({ variant: 'default', size: 'icon' })}>
+        <Link
+          to="?dialog=creator"
+          state={{ prevLocation: location }}
+          className={buttonVariants({ variant: 'default', size: 'icon' })}
+        >
           <Plus />
         </Link>
       </div>
       
       <div className='flex-1'>
-        <InfiniteCreatorsFilterInner />
+        <InfiniteCreatorsGridInner />
       </div>
 
       <CreatorFormModal />

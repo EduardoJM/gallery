@@ -19,6 +19,7 @@ const Like = lazy(() => import('./pages/like'));
 */
 
 const Gallery = lazy(() => import('@/modules/gallery/routes'));
+const Creators = lazy(() => import('@/modules/creator/routes'));
 
 const DashboardRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const DashboardRoutes = () => {
         <Route path="" element={<Navigate to="/dashboard/gallery" replace />} />
         
         <Route path="gallery/*" element={<Gallery />} />
+        <Route path="creators/*" element={<Creators />} />
         {/*
         <Route path="ai-providers/*" element={<AIProviderRoutes />} />
         <Route path="ai-prompt-templates/*" element={<AIPromptTemplatesRoutes />} />
