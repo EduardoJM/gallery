@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MoreVertical } from 'lucide-react';
 import ReactPlayer from 'react-player'
 import {
   Dialog,
@@ -11,6 +11,8 @@ import { useContentById } from '../queries';
 import { ContentType } from '../types';
 import { Button } from '@/components/ui/button';
 import { useFindPreviousContent, useFindNextContent } from '../mutations';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ModalEditTags } from '../modals/modal-edit-tags';
 
 interface GalleryItemModalInnerProps {
   id: string;
@@ -101,6 +103,15 @@ const GalleryItemModal = () => {
           <GalleryItemModalInner id={id || ''} />
         </Suspense>
         
+        <ModalEditTags>
+          <button
+            className='absolute right-12 top-4 text-white rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
+          >
+            <MoreVertical className="h-4 w-4" />
+            <span className="sr-only">Edit tags</span>
+          </button>
+        </ModalEditTags>
+
         <DialogClose className='text-white' />
       </DialogContent>
     </Dialog>
