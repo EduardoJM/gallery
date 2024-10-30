@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { HydratedDocument, now } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type TagDocument = HydratedDocument<Tag>;
 
@@ -22,10 +22,6 @@ export class Tag {
   @ApiProperty()
   @Prop({ type: String, required: true })
   userId: string;
-
-  @ApiProperty()
-  @Prop({ type: String, required: true })
-  creatorId: string;
 
   @ApiProperty()
   @Prop({ type: String, required: true })

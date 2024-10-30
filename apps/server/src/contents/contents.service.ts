@@ -166,9 +166,9 @@ export class ContentsService {
   async setTags(user: User, contentId: string, tags: string[]) {
     const doc = await this.findById(user, contentId);
     await Promise.all(
-      tags.map((tag) => this.tagsService.createTag(user.id, doc.creator.id, tag))
+      tags.map((tag) => this.tagsService.createTag(user.id, tag))
     )
     doc.tags = tags;
-    return doc.save();
+    return doc.save()
   }
 }

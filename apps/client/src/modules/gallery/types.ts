@@ -9,6 +9,7 @@ export interface Content {
   id: string;
   type: ContentType;
   creator: ContentCreator;
+  tags?: Array<string>;
 }
 
 export interface PaginatedContents {

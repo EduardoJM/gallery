@@ -11,7 +11,6 @@ import { useContentById } from '../queries';
 import { ContentType } from '../types';
 import { Button } from '@/components/ui/button';
 import { useFindPreviousContent, useFindNextContent } from '../mutations';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ModalEditTags } from '../modals/modal-edit-tags';
 
 interface GalleryItemModalInnerProps {
@@ -26,6 +25,20 @@ const GalleryItemModalInner = ({ id }: GalleryItemModalInnerProps) => {
 
   return (
     <>
+      <ModalEditTags
+        creatorId={content.creator.id}
+        tags={content.tags || []}
+        contentId={content.id}
+      >
+        <button
+          className='absolute right-12 top-4 text-white rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
+        >
+          <MoreVertical className="h-4 w-4" />
+          <span className="sr-only">Edit tags</span>
+        </button>
+      </ModalEditTags>
+
+
       {content.type === ContentType.Photo && (
         <img
           loading='lazy'
@@ -103,15 +116,6 @@ const GalleryItemModal = () => {
           <GalleryItemModalInner id={id || ''} />
         </Suspense>
         
-        <ModalEditTags>
-          <button
-            className='absolute right-12 top-4 text-white rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
-          >
-            <MoreVertical className="h-4 w-4" />
-            <span className="sr-only">Edit tags</span>
-          </button>
-        </ModalEditTags>
-
         <DialogClose className='text-white' />
       </DialogContent>
     </Dialog>

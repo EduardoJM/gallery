@@ -32,12 +32,12 @@ export class TagsService {
     }
   }
 
-  async createTag(userId: string, creatorId: string, name: string) {
-    const doc = await this.tagModel.findOne({ userId, creatorId, name }).exec();
+  async createTag(userId: string, name: string) {
+    const doc = await this.tagModel.findOne({ userId, name }).exec();
     if (doc) {
       return doc;
     }
-    const savedTag = new this.tagModel({ name, creatorId, userId });
+    const savedTag = new this.tagModel({ name, userId });
     return savedTag.save();
   }
 }

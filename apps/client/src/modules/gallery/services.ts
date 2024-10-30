@@ -45,6 +45,11 @@ export const getContentById = async (id: string): Promise<Content> => {
   return data;
 };
 
+export const setContentTags = async (id: string, tags: Array<string>): Promise<Content> => {
+  const { data } = await api.put<Content>(`/contents/${id}/tags`, { tags });
+  return data;
+}
+
 export const uploadPhoto = async (
   creatorId: string,
   file: File,
