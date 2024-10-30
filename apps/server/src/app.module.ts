@@ -5,6 +5,7 @@ import { CreatorsModule } from './creators/creators.module';
 import { AuthModule } from './auth/auth.module';
 import { ContentsModule } from './contents/contents.module';
 import { MediaModule } from './media/media.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MediaModule } from './media/media.module';
     AuthModule,
     ContentsModule,
     MediaModule,
+    TagsModule,
   ],
   controllers: [],
   providers: [],
