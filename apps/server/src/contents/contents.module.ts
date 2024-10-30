@@ -6,6 +6,7 @@ import { Content, ContentSchema } from './schemas/content.schema';
 import { UsersModule } from 'src/users/users.module';
 import { CreatorsModule } from 'src/creators/creators.module';
 import { Creator, CreatorSchema } from 'src/creators/schemas/creator.schema';
+import { TagsModule } from '../tags/tags.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { Creator, CreatorSchema } from 'src/creators/schemas/creator.schema';
     ]),
     UsersModule,
     CreatorsModule,
+    TagsModule,
   ],
   controllers: [ContentsController],
   providers: [ContentsService],

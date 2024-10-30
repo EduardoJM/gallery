@@ -1,12 +1,13 @@
 import * as multer from 'multer';
 import * as path from 'path';
-import { Controller, UseGuards, Request, Get, Post, ParseIntPipe, Query, UseInterceptors, Body, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Post, ParseIntPipe, Query, UseInterceptors, Body, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ContentsService } from './contents.service';
 import { User } from 'src/users/schemas/user.schema';
 import { CreatePhotoDto } from './dto';
+import { SetTagsDto } from './dto/set-tags.dto';
 
 @ApiTags('contents')
 @Controller('contents')
@@ -110,5 +111,15 @@ export class ContentsController {
   ) {
     const user = request.user as User;
     return this.contentsService.findById(user, id);
+  }
+
+  @Put(':id/tags')
+  async setTagsById(
+    @Request() request,
+    @Param('id') id: string,
+    @Body() setTagsDto: SetTagsDto,
+  ) {
+    const user = request.user as User;
+    return this.contentsService.setTags(user, id, setTagsDto.tags)
   }
 }

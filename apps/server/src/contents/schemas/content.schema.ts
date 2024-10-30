@@ -43,6 +43,9 @@ export class Content {
   @ApiProperty()
   @Prop({ required: true })
   file: string;
+
+  @Prop({ type: [String], required: false })
+  tags: Array<string>;
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);

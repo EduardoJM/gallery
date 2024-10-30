@@ -6,6 +6,7 @@ import { Content, ContentType } from './schemas/content.schema';
 import { User } from 'src/users/schemas/user.schema';
 import { Creator } from 'src/creators/schemas/creator.schema';
 import { CreatorsService } from 'src/creators/creators.service';
+import { TagsService } from 'src/tags/tags.service';
 
 @Injectable()
 export class ContentsService {
@@ -15,6 +16,7 @@ export class ContentsService {
     @InjectModel(Content.name) private contentModel: Model<Content>,
     @InjectModel(Creator.name) private creatorModel: Model<Creator>,
     private creatorsService: CreatorsService,
+    private tagsService: TagsService,
   ) {}
 
   private getTotalCount(user: User, creator?: Creator): Promise<number> {
@@ -159,5 +161,14 @@ export class ContentsService {
       type: ContentType.Video,
     });
     return createdContent.save();
+  }
+
+  async setTags(user: User, contentId: string, tags: string[]) {
+    const doc = await this.findById(user, contentId);
+    await Promise.all(
+      tags.map((tag) => this.tagsService.createTag(user.id, doc.creator.id, tag))
+    )
+    doc.tags = tags;
+    return doc.save();
   }
 }
