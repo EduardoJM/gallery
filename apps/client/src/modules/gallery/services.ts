@@ -2,13 +2,21 @@ import { AxiosProgressEvent } from "axios";
 import api from "@/lib/axios"
 import { Content, PaginatedContents } from './types';
 
-export const getContentsPaginated = async (page: number = 1, creator: string | null = null, mediaType: string | null = null): Promise<PaginatedContents> => {
+export const getContentsPaginated = async (
+  page: number = 1,
+  creator: string | null = null,
+  mediaType: string | null = null,
+  tags: string | null = null,
+): Promise<PaginatedContents> => {
   let queries = `?page=${page}`;
   if (creator) {
     queries = `${queries}&creator=${creator}`;
   }
   if (mediaType) {
     queries = `${queries}&mediaType=${mediaType}`
+  }
+  if (tags) {
+    queries = `${queries}&tags=${tags}`;
   }
   const { data } = await api.get<PaginatedContents>(`/contents${queries}`);
   return data;

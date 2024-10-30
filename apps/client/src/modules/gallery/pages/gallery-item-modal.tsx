@@ -26,7 +26,6 @@ const GalleryItemModalInner = ({ id }: GalleryItemModalInnerProps) => {
   return (
     <>
       <ModalEditTags
-        creatorId={content.creator.id}
         tags={content.tags || []}
         contentId={content.id}
       >

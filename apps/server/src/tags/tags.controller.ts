@@ -10,13 +10,12 @@ import { User } from "../users/schemas/user.schema";
 export class TagsController {
   constructor(private tagsService: TagsService) {}
 
-  @Get('by-creator/:creatorId')
+  @Get('')
   async list(
     @Request() request,
-    @Param('creatorId') creatorId: string,
     @Query('page', new ParseIntPipe({ optional: true })) page: number
   ) {
     const user = request.user as User;
-    return this.tagsService.listByUserAndCreator(user.id, creatorId, page)
+    return this.tagsService.list(user.id, page)
   }
 }

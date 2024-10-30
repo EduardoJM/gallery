@@ -35,7 +35,7 @@ const CreatableAsyncPaginate = withAsyncPaginate(
   Creatable
 ) as AsyncPaginateCreatableType;
 
-export const ModalEditTags = ({ children, contentId, creatorId, tags }: PropsWithChildren<{ contentId: string; creatorId: string; tags: Array<string> }>) => {
+export const ModalEditTags = ({ children, contentId, tags }: PropsWithChildren<{ contentId: string; tags: Array<string> }>) => {
   const [value, setValue] = useState<Array<{ label: string; value: string }>>(
     tags.map((tag) => ({ label: tag, value: tag })),
   );
@@ -62,7 +62,7 @@ export const ModalEditTags = ({ children, contentId, creatorId, tags }: PropsWit
               placeholder="Select tags"
               loadOptions={async (search: string, _: unknown, additional?: { page?: number }) => {
                 const { page } = additional || { page: 1 };
-                const data = await getTagsPaginated(creatorId, page || 1, search);
+                const data = await getTagsPaginated(page || 1, search);
                 
                 return {
                   options: [

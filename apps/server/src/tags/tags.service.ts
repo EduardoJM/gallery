@@ -9,14 +9,14 @@ export class TagsService {
 
   constructor(@InjectModel(Tag.name) private tagModel: Model<Tag>) {}
 
-  private getTotalCount(userId: string, creatorId: string): Promise<number> {
-    return this.tagModel.countDocuments({ userId, creatorId }).exec();
+  private getTotalCount(userId: string): Promise<number> {
+    return this.tagModel.countDocuments({ userId }).exec();
   }
 
-  async listByUserAndCreator(userId: string, creatorId: string, page: number = 1) {
-    const total = await this.getTotalCount(userId, creatorId);
+  async list(userId: string, page: number = 1) {
+    const total = await this.getTotalCount(userId);
     const tags = await this.tagModel
-      .find({ userId, creatorId }, ['userId', 'creatorId', 'name'], {
+      .find({ userId }, ['userId', 'name'], {
         skip: (page - 1) * this.perPage,
         limit: this.perPage
       })

@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom';
 import { PaginatedContents } from '../types';
 import { getContentsPaginated } from '../services';
 
-export const useContentsInfinite = (mediaType: string | null = null) => {
+export const useContentsInfinite = (
+  mediaType: string | null = null,
+  tags: string | null = null,
+) => {
   const { creator } = useParams();
 
   return useSuspenseInfiniteQuery<
@@ -13,8 +16,10 @@ export const useContentsInfinite = (mediaType: string | null = null) => {
     QueryKey,
     number
   >({
-    queryKey: ['contents', creator || null, mediaType],
-    queryFn: async ({ pageParam }) => getContentsPaginated(pageParam, creator || null, mediaType),
+    queryKey: ['contents', creator || null, mediaType, tags],
+    queryFn: async ({ pageParam }) => {
+      return getContentsPaginated(pageParam, creator || null, mediaType, tags);
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (!lastPage.meta.pages) {

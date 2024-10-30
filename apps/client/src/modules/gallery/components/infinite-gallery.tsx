@@ -18,7 +18,10 @@ export const InfiniteGallery = () => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useContentsInfinite(params.get('media') || null);
+  } = useContentsInfinite(
+    params.get('media') || null,
+    params.get('tags') || null,
+  );
   const { creator } = useParams();
 
   useEffect(() => {
