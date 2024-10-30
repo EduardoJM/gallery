@@ -1,6 +1,6 @@
 import * as multer from 'multer';
 import * as path from 'path';
-import { Controller, UseGuards, Request, Get, Post, ParseIntPipe, Query, UseInterceptors, Body, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param, Put } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Post, ParseIntPipe, Query, UseInterceptors, Body, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param, Put, ParseArrayPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -77,11 +77,12 @@ export class ContentsController {
   async list(
     @Request() request,
     @Query('page', new ParseIntPipe({ optional: true })) page: number,
+    @Query('tags', new ParseArrayPipe({ items: String, separator: ',', optional: true })) tags?: Array<string> | null,
     @Query('creator') creatorId?: string | null,
     @Query('mediaType') mediaType?: string | null,
   ) {
     const user = request.user as User;
-    return this.contentsService.list(user, creatorId || null, page, mediaType)
+    return this.contentsService.list(user, creatorId || null, page, mediaType, tags)
   }
 
   @Get('next/:id')

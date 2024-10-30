@@ -19,12 +19,7 @@ export class ContentsService {
     private tagsService: TagsService,
   ) {}
 
-  private getTotalCount(user: User, creator?: Creator): Promise<number> {
-    let data: FilterQuery<Content> = { user };
-    if (creator) {
-      data = { ...data, creator };
-    }
-
+  private getTotalCount(data: FilterQuery<Content>): Promise<number> {
     return this.contentModel.countDocuments(data).exec();
   }
 
@@ -33,6 +28,7 @@ export class ContentsService {
     creatorId?: string | null,
     page: number = 1,
     mediaType?: string | null,
+    tags: Array<string> = [],
   ) {
     let data: FilterQuery<Content> = { user };
     let creator: Creator | null = null;
@@ -46,7 +42,10 @@ export class ContentsService {
     if (mediaType) {
       data = { ...data, type: mediaType }
     }
-    const total = await this.getTotalCount(user, creator);
+    if (tags.length > 0) {
+      data = { ...data, tags: { $in: tags } };
+    }
+    const total = await this.getTotalCount(data);
 
     const contents = await this.contentModel
       .find(data, ['_id', 'creator', 'type', 'createdAt', 'updatedAt'], {
