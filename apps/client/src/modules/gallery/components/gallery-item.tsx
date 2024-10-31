@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Play } from 'lucide-react'
 import { Content, ContentType } from '../types';
 import { CreatorLine } from "@/modules/creator/components/creator-line";
@@ -9,13 +9,14 @@ export interface GalleryItemProps {
 
 export const GalleryItem = ({ content }: GalleryItemProps) => {
   const { creator } = useParams();
+  const [search] = useSearchParams();
   const mediaToken = localStorage.getItem('@GALLERY:MEDIATOKEN');
   const location = useLocation();
 
   return (
     <div className="space-y-3 ">
       <Link
-        to={`/dashboard/gallery/${creator ? `${creator}/` : ''}content/${content.id}/`}
+        to={`/dashboard/gallery/${creator ? `${creator}/` : ''}content/${content.id}/?${search.toString()}`}
         state={{
           prevLocation: location
         }}

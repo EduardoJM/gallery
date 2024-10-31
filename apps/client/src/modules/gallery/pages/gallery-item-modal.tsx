@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useRef } from 'react';
 import { Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, MoreVertical } from 'lucide-react';
 import ReactPlayer from 'react-player'
@@ -30,7 +30,7 @@ const GalleryItemModalInner = ({ id }: GalleryItemModalInnerProps) => {
         contentId={content.id}
       >
         <button
-          className='absolute right-12 top-4 text-white rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
+          className='absolute z-50 right-12 top-4 text-white rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
         >
           <MoreVertical className="h-4 w-4" />
           <span className="sr-only">Edit tags</span>
@@ -77,13 +77,14 @@ const GalleryItemModalInner = ({ id }: GalleryItemModalInnerProps) => {
 const GalleryItemModal = () => {
   const { id } = useParams<{ id?: string }>();
   const { state } = useLocation();
+  const stateRef = useRef(state);
   const navigate = useNavigate();
 
   const handleClose = () => {
-    if (!state?.prevLocation) {
+    if (!stateRef.current?.prevLocation) {
       return navigate('/dashboard/gallery');
     }
-    return navigate(state.prevLocation);
+    return navigate(stateRef.current.prevLocation);
   }
 
   const handleOpenChange = (value: boolean) => {
